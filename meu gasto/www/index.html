@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6c5ce7">
+<title>Meu gasto</title>
+<style>
+:root {
+    --bg: #f4f3fb;
+    --card: #fff;
+    --text: #1d1b2e;
+    --muted: #7a7894;
+    --line: #ebe9f5;
+    --green: #12b981;
+    --red: #f43f5e;
+    --acc: #6c5ce7;
+    --acc2: #a29bfe;
+    --azul: #008cff;
+    --azul2: #006eff;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+}
+
+@media (prefers-color-scheme:dark) {
+    :root:not([data-theme="light"]) {
+    --bg: #000000;
+    --card: #1f1f1f;
+    --text: #ffffff;
+    --muted: #fbfbfd;
+    --line: #2b2940;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    min-height: 100vh;
+}
+
+.app {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px 16px 110px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+h1 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.mnav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card);
+    border-radius: 99px;
+    padding: 4px;
+}
+
+.mnav button,.ic {
+    border: 0;
+    background: none;
+    color: var(--text);
+    font-size: 18px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.mnav span {
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 92px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.hero {
+    background: linear-gradient(135deg, var(--azul2), var(--azul));
+    color: #fff;
+    border-radius: 24px;
+    padding: 22px;
+    box-shadow: 0 12px 30px -12px var(--azul);
+}
+
+.hero small {
+    opacity: .85;
+}
+
+.hero .bal {
+    font-size: 34px;
+    font-weight: 800;
+    margin: 4px 0 4px;
+}
+
+.hero .prev-bal {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-bottom: 16px;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.pill {
+    flex: 1;
+    background: rgba(255,255,255,.18);
+    border-radius: 16px;
+    padding: 10px 12px;
+    font-size: 13px;
+}
+
+.pill b {
+    display: block;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 16px;
+    margin-top: 14px;
+}
+
+h2 {
+    font-size: 15px;
+    margin: 0 0 12px;
+}
+
+.donut {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.ring {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    flex: none;
+    position: relative;
+}
+
+.ring::after {
+    content: "";
+    position: absolute;
+    inset: 20px;
+    background: var(--card);
+    border-radius: 50%;
+}
+
+.leg {
+    flex: 1;
+    font-size: 13px;
+    display: grid;
+    gap: 6px;
+}
+
+.leg div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.leg i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex: none;
+}
+
+.leg em {
+    margin-left: auto;
+    font-style: normal;
+    color: var(--muted);
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 18px 0;
+    font-size: 14px;
+}
+
+.tx {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.tx:last-child {
+    border: 0;
+}
+
+.em {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: var(--bg);
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    flex: none;
+}
+
+.tx .t {
+    flex: 1;
+    min-width: 0;
+}
+
+.tx .t b {
+    display: block;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tx .t small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.tx .v {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.tx .x {
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.in {
+    color: var(--green);
+}
+
+.out {
+    color: var(--red);
+}
+
+.fab {
+    position: fixed;
+    right: max(20px, calc(50% - 220px));
+    bottom: calc(22px + env(safe-area-inset-bottom,0px));
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 0;
+    background: var(--azul2);
+    color: #fff;
+    font-size: 30px;
+    box-shadow: 0 10px 24px -6px var(--azul);
+    cursor: pointer;
+}
+
+.ov {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 20;
+}
+
+.ov.on {
+    display: flex;
+}
+
+.sheet {
+    background: var(--card);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 28px 28px 0 0;
+    padding: 20px 18px calc(22px + env(safe-area-inset-bottom,0px));
+    max-height: 92vh;
+    overflow: auto;
+}
+
+.seg {
+    display: flex;
+    background: var(--bg);
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 14px;
+}
+
+.seg button {
+    flex: 1;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    padding: 10px;
+    border-radius: 11px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.seg button.on.e {
+    background: var(--red);
+    color: #fff;
+}
+
+.seg button.on.g {
+    background: var(--green);
+    color: #fff;
+}
+
+.val {
+    width: 100%;
+    border: 0;
+    background: none;
+    color: var(--text);
+    font-size: 38px;
+    font-weight: 800;
+    text-align: center;
+    outline: none;
+    margin-bottom: 8px;
+}
+
+input.f {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 14px;
+    padding: 12px;
+    font-size: 15px;
+    margin-top: 10px;
+    outline: none;
+}
+
+.cats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.cats button {
+    border: 2px solid transparent;
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 14px;
+    padding: 8px 2px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.cats button span {
+    display: block;
+    font-size: 22px;
+}
+
+.cats button.on {
+    border-color: var(--azul2);
+}
+
+.save {
+    width: 100%;
+    margin-top: 16px;
+    border: 0;
+    background: var(--azul2);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 15px;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.tools {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.tools button {
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--muted);
+    border-radius: 99px;
+    padding: 8px 14px;
+    font-size: 12px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Meus gastos e Ganhos</h1>
+    <div class="mnav"><button id="pv">‹</button><span id="mn"></span><button id="nx">›</button></div>
+  </header>
+  <div class="hero">
+    <small>Saldo Total do Mês</small>
+    <div class="bal" id="bal"></div>
+    <div class="prev-bal" id="prev-bal"></div>
+    <div class="row">
+      <div class="pill">⬆️ Ganhos<b id="gi"></b></div>
+      <div class="pill">⬇️ Gastos<b id="go"></b></div>
+    </div>
+  </div>
+  <div class="card"><h2>Para onde foi o dinheiro</h2><div id="chart"></div></div>
+  <div class="card"><h2>Movimentações</h2><div id="list"></div></div>
+  <div class="tools"><button id="bk">⬇️ Backup</button><button id="rs">⬆️ Restaurar</button><button id="th">🌓 Tema</button></div>
+</div>
+<button class="fab" id="add" aria-label="Adicionar">+</button>
+
+<div class="ov" id="ov"><div class="sheet">
+  <div class="seg"><button class="on e" id="te">Gasto</button><button id="tg">Ganho</button></div>
+  <input class="val" id="v" type="number" inputmode="decimal" placeholder="R$ 0,00" step="0.01">
+  <div class="cats" id="cats"></div>
+  <input class="f" id="d" placeholder="Descrição (opcional)">
+  <input class="f" id="dt" type="date">
+  <button class="save" id="sv">Salvar</button>
+</div></div>
+<input type="file" id="file" accept=".json" hidden>
+
+<script>
+const CE=[["🍔","Comida"],["🚗","Transporte"],["🏠","Casa"],["🎮","Lazer"],["🛍️","Compras"],["💊","Saúde"],["📚","Estudos"],["✨","Outros"]];
+const CG=[["💼","Salário"],["💸","Extra"],["🎁","Presente"],["📈","Invest."],["✨","Outros"]];
+const COL=["#6c5ce7","#f43f5e","#12b981","#f59e0b","#0ea5e9","#ec4899","#8b5cf6","#94a3b8"];
+const $=id=>document.getElementById(id);
+const brl=n=>n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let tx=[],type="e",cat=0,cur=new Date();cur.setDate(1);
+try{tx=JSON.parse(localStorage.getItem("mb_tx")||"[]")}catch(e){}
+const save=()=>{try{localStorage.setItem("mb_tx",JSON.stringify(tx))}catch(e){}};
+const key=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+const today=()=>{const d=new Date();return key(d)+"-"+String(d.getDate()).padStart(2,"0")};
+
+function render(){
+  $("mn").textContent=cur.toLocaleDateString("pt-BR",{month:"long",year:"numeric"});
+  const k=key(cur);
+  
+  // 1. Movimentações exclusivas do mês selecionado
+  const m=tx.filter(t=>t.date.startsWith(k)).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+  
+  // 2. Ganhos e Gastos ZERAM todo mês (contam apenas do mês atual)
+  const gi=m.filter(t=>t.type=="g").reduce((s,t)=>s+t.value,0);
+  const go=m.filter(t=>t.type=="e").reduce((s,t)=>s+t.value,0);
+  
+  // 3. Saldo acumulado dos meses anteriores
+  const prevTx=tx.filter(t=>t.date < k+"-01");
+  const prevGi=prevTx.filter(t=>t.type=="g").reduce((s,t)=>s+t.value,0);
+  const prevGo=prevTx.filter(t=>t.type=="e").reduce((s,t)=>s+t.value,0);
+  const prevBal=prevGi-prevGo;
+  
+  // 4. Saldo Total = Saldo Anterior + Ganhos do Mês - Gastos do Mês
+  const totalBal = prevBal + gi - go;
+  
+  $("bal").textContent=brl(totalBal);
+  $("gi").textContent=brl(gi);
+  $("go").textContent=brl(go);
+  
+  // Exibe a tag com o valor que veio do mês anterior
+  const prevElem = $("prev-bal");
+  if(prevBal !== 0){
+    prevElem.style.display = "inline-block";
+    prevElem.textContent = "Veio do mês anterior: " + brl(prevBal);
+  } else {
+    prevElem.style.display = "none";
+  }
+
+  const by={};m.filter(t=>t.type=="e").forEach(t=>by[t.cat]=(by[t.cat]||0)+t.value);
+  const es=Object.entries(by).sort((a,b)=>b[1]-a[1]);
+  if(!es.length)$("chart").innerHTML='<div class="empty">Sem gastos neste mês 🎉</div>';
+  else{let acc=0;const seg=es.map(([c,v],i)=>{const s=acc/go*100;acc+=v;return COL[i%8]+" "+s+"% "+acc/go*100+"%"}).join(",");
+    $("chart").innerHTML='<div class="donut"><div class="ring" style="background:conic-gradient('+seg+')"></div><div class="leg">'+
+    es.slice(0,5).map(([c,v],i)=>'<div><i style="background:'+COL[i%8]+'"></i>'+esc(c)+'<em>'+Math.round(v/go*100)+'%</em></div>').join("")+'</div></div>';}
+  $("list").innerHTML=m.length?m.map(t=>{const all=t.type=="e"?CE:CG,ic=(all.find(c=>c[1]==t.cat)||["✨"])[0],[y,mo,d]=t.date.split("-");
+    return '<div class="tx"><div class="em">'+ic+'</div><div class="t"><b>'+esc(t.desc||t.cat)+'</b><small>'+d+"/"+mo+" · "+esc(t.cat)+'</small></div><div class="v '+(t.type=="g"?"in":"out")+'">'+(t.type=="g"?"+":"−")+brl(t.value)+'</div><button class="x" data-id="'+t.id+'" aria-label="Apagar">✕</button></div>'}).join(""):
+    '<div class="empty">Nada por aqui ainda.<br>Toque no + para começar ✨</div>';
+}
+function cats(){
+  const a=type=="e"?CE:CG;if(cat>=a.length)cat=0;
+  $("cats").innerHTML=a.map((c,i)=>'<button class="'+(i==cat?"on":"")+'" data-i="'+i+'"><span>'+c[0]+'</span>'+c[1]+'</button>').join("");
+}
+function setType(t){type=t;cat=0;$("te").className=t=="e"?"on e":"";$("tg").className=t=="g"?"on g":"";cats()}
+$("te").onclick=()=>setType("e");$("tg").onclick=()=>setType("g");
+$("cats").onclick=e=>{const b=e.target.closest("button");if(b){cat=+b.dataset.i;cats()}};
+$("add").onclick=()=>{$("v").value="";$("d").value="";$("dt").value=today();setType("e");$("ov").classList.add("on");setTimeout(()=>$("v").focus(),100)};
+$("ov").onclick=e=>{if(e.target.id=="ov")$("ov").classList.remove("on")};
+$("sv").onclick=()=>{
+  const v=parseFloat($("v").value);if(!(v>0)){$("v").focus();return}
+  const a=type=="e"?CE:CG;
+  tx.push({id:Date.now(),type,value:v,cat:a[cat][1],desc:$("d").value.trim(),date:$("dt").value||today()});
+  save();$("ov").classList.remove("on");
+  const d=new Date((tx[tx.length-1].date)+"T12:00:00");cur=new Date(d.getFullYear(),d.getMonth(),1);render();
+};
+$("list").onclick=e=>{const b=e.target.closest(".x");if(b&&confirm("Apagar esta movimentação?")){tx=tx.filter(t=>t.id!=b.dataset.id);save();render()}};
+$("pv").onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);render()};
+$("nx").onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);render()};
+$("th").onclick=()=>{const r=document.documentElement,dark=getComputedStyle(r).getPropertyValue("--bg").trim()=="#000000";r.dataset.theme=dark?"light":"dark"};
+$("bk").onclick=()=>{const a=document.createElement("a");a.href="data:application/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(tx));a.download="meu-bolso-backup.json";a.click();setTimeout(()=>{if(!document.hidden)prompt("Se o download não iniciou, copie este backup:",JSON.stringify(tx))},400)};
+$("rs").onclick=()=>$("file").click();
+$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(Array.isArray(d)){tx=d;save();render()}}catch(x){alert("Arquivo inválido")}};r.readAsText(f)};
+render();
+</script>
+</body>
+</html>
